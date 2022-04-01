@@ -22,7 +22,7 @@ public class IPAddressCounter {
         BitSet setPositive = new BitSet();
         BitSet setNegative = new BitSet();
         int hasZero = 0;
-        int i = 0;
+        long i = 0L;
         while (Objects.nonNull(line)) {
             int number = getNumberFromLine(line);
             if (number > 0) {
