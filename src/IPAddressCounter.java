@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public class IPAddressCounter {
 
-    private static final String IP_FILE = "src/resources/test.txt";
+    private static final String IP_FILE = "C:\\Users\\Ilia_Stavrov\\Downloads\\ip_addresses\\ip_addresses";
 
     private static final Map<String, Integer> cache = getCache();
 
@@ -22,6 +22,7 @@ public class IPAddressCounter {
         BitSet setPositive = new BitSet();
         BitSet setNegative = new BitSet();
         int hasZero = 0;
+        int i = 0;
         while (Objects.nonNull(line)) {
             int number = getNumberFromLine(line);
             if (number > 0) {
@@ -32,9 +33,20 @@ public class IPAddressCounter {
                 hasZero = 1;
             }
             line = reader.readLine();
+            i++;
+            if (i % 100_000_000 == 0) {
+                System.out.println(i + " " + getResult(setPositive, setNegative, hasZero));
+            }
         }
-        System.out.println(setPositive.cardinality() + setNegative.cardinality() + hasZero);
-        System.out.println("Time: " + (System.currentTimeMillis() - begin) / 1000 + " s");
+        System.out.println("Result: " + getResult(setPositive, setNegative, hasZero));
+        long milliseconds = System.currentTimeMillis() - begin;
+        long minutes = (milliseconds / 1000) / 60;
+        long seconds = (milliseconds / 1000) % 60;
+        System.out.println("Time: " + minutes + "m " + seconds + "s");
+    }
+
+    private static int getResult(BitSet setPositive, BitSet setNegative, int hasZero) {
+        return setPositive.cardinality() + setNegative.cardinality() + hasZero;
     }
 
     private static Map<String, Integer> getCache() {
