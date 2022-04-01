@@ -10,12 +10,12 @@ import java.util.Objects;
 
 public class IPAddressCounter {
 
-    public static final String IP_FILE = "src/resources/test.txt";
-    private static final Map<String, Integer> cache = new HashMap<>();
+    private static final String IP_FILE = "src/resources/test.txt";
+
+    private static final Map<String, Integer> cache = getCache();
 
     public static void main(String[] args) throws IOException {
         long begin = System.currentTimeMillis();
-        fillCache();
         Path path = Paths.get(IP_FILE);
         BufferedReader reader = Files.newBufferedReader(path);
         String line = reader.readLine();
@@ -34,13 +34,15 @@ public class IPAddressCounter {
             line = reader.readLine();
         }
         System.out.println(setPositive.cardinality() + setNegative.cardinality() + hasZero);
-        System.out.println("Time: " + (System.currentTimeMillis() - begin)/1000 + " s");
+        System.out.println("Time: " + (System.currentTimeMillis() - begin) / 1000 + " s");
     }
 
-    private static void fillCache() {
+    private static Map<String, Integer> getCache() {
+        Map<String, Integer> cache = new HashMap<>();
         for (int i = 0; i < 256; i++) {
             cache.put(String.valueOf(i), i);
         }
+        return cache;
     }
 
     private static int getNumberFromLine(String line) {
